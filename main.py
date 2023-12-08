@@ -4,6 +4,7 @@ import pandas as pd
 import argparse
 from tabulate import tabulate
 
+
 def create_dataframe(csv, delimiter, cols=None):
     """
     Create a DataFrame from a CSV file.
@@ -20,6 +21,7 @@ def create_dataframe(csv, delimiter, cols=None):
     if cols:
         df.drop(df.columns[list(map(int, cols.split()))], axis=1, inplace=True)
     return df
+
 
 def write_duplicates_output_file(df, source_file, output_file):
     """
@@ -38,6 +40,7 @@ def write_duplicates_output_file(df, source_file, output_file):
     print(f"{source_file} contains: {num_duplicates} duplicates")
     duplicates.to_csv(output_file, index=False)
 
+
 def remove_duplicates(df):
     """
     Removes duplicates from a DataFrame.
@@ -49,6 +52,7 @@ def remove_duplicates(df):
     - pd.DataFrame: DataFrame without duplicates.
     """
     return df.drop_duplicates()
+
 
 def compare_datasets(df1: pd.DataFrame, df2: pd.DataFrame, output_file, order_by, option):
     """
@@ -73,6 +77,7 @@ def compare_datasets(df1: pd.DataFrame, df2: pd.DataFrame, output_file, order_by
     diff_df.to_csv(output_file, index=False)
     return diff_df
 
+
 def handle_type(value):
     """
     Handles the data type for printing.
@@ -84,6 +89,7 @@ def handle_type(value):
     - str: Value converted to a string.
     """
     return str(value) if pd.notna(value) and not isinstance(value, list) else value
+
 
 def find_differences(group, order_by):
     """
@@ -111,6 +117,7 @@ def find_differences(group, order_by):
 
         return pd.DataFrame(diff_data)
     return pd.DataFrame()
+
 
 def main():
     """
@@ -153,6 +160,7 @@ def main():
         print("\nDetails on differences:")
         print(tabulate(differences[[args.order_by, 'Column_Name', 'Left_Value', 'Right_Value']],
                         headers='keys', tablefmt='psql'))
+
 
 if __name__ == '__main__':
     main()
