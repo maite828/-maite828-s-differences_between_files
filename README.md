@@ -104,19 +104,19 @@ python compare_csvs.py <file1> <file2> <delimiter> [--identifier <id_column>] [-
 
 Examples:
 # Comparar valores en la columna ID
-python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option default
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
 
 # Mostrar registros que solo están en el archivo izquierdo
-python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option left_only
+python3 reporting_compare.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_option left_only
 
 # Mostrar registros que solo están en el archivo derecho
-python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option right_only
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
 
 # Mostrar registros que están en ambos archivos
-python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option both
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
 
 # Excluir columnas 0, 3 y 4 al realizar la comparación
-python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+python3 reporting_compare.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
 
 # Encontrar duplicados en el archivo
 python3 main.py file1.csv '|'

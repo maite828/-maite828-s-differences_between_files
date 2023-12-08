@@ -125,8 +125,8 @@ def main():
     """
     parser = argparse.ArgumentParser(description="Compare two CSV files and find differences.")
     parser.add_argument("file1", help="Path to the first CSV file")
-    parser.add_argument("delimiter", help="Delimiter used in CSV files")
     parser.add_argument("--file2", help="Path to the second CSV file")
+    parser.add_argument("delimiter", help="Delimiter used in CSV files")
     parser.add_argument("--identifier", help="Column(s) to order the results by")
     parser.add_argument("--merge_option", help="Comparison merge_option: left_only, right_only, both, default")
     parser.add_argument("--columns", help="Columns to exclude (space-separated indices)")
@@ -159,7 +159,8 @@ def main():
         print(f'The output with \'{args.merge_option.upper()}\' generates the following differences:\n')
         print(result[[args.identifier, '_merge']])
 
-        differences = result.groupby(args.identifier).apply(find_differences, identifier=args.identifier).dropna()
+        df_no_join_col = result.drop('_merge', axis=1)
+        differences = df_no_join_col.groupby(args.identifier).apply(find_differences, identifier=args.identifier).dropna()
 
         if not differences.empty:
             print("\nDetails on differences:")
