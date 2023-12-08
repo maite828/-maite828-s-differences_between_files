@@ -3,23 +3,26 @@
 This Python script compares two CSV files and finds the differences between them.:
 
 ```bash
-python compare_csvs.py <file1> <file2> <delimiter> <order_by> <option> [--columns <excluded_columns>] [--output <output_file>]
+python compare_csvs.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]
 
 Examples:
 # Compare values ​​in the ID column
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' default
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
 
 # Show records that are only in the left file
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' left_only
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option left_only
 
 # Show records that are only in the right file
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' right_only
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
 
 # Show records that are in both files
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' both
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
 
 # Exclude columns 0, 3 and 4 when comparing
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' default --columns "0 3 4"
+python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+
+# Find duplicates in file
+python3 main.py file1.csv '|'
 ```
 
 
@@ -32,15 +35,15 @@ This Python code compares two CSV files and identifies the differences between t
 The code requires the following input arguments to function properly:
 
 * `file1`: Path to the first CSV file to be compared
-* `file2`: Path to the second CSV file to be compared
 * `delimiter`: Delimiter character used in the CSV files
-* `order_by`: Column(s) to order the comparison results by
-* `option`: Comparison option (left_only, right_only, both, or default)
 
 ## Optional arguments
 
 The code also supports the following optional arguments for further customization:
 
+* `--file2`: Path to the second CSV file to be compared
+* `--identifier`: Column(s) to order the comparison results by
+* `--merge_option`: Comparison option (left_only, right_only, both, or default)
 * `--columns`: Space-separated list of column indices to exclude from the comparison
 * `--output`: Name of the output file to store the comparison results
 
@@ -97,23 +100,26 @@ Este script en Python compara dos archivos CSV y encuentra las diferencias entre
 El script se ejecuta desde la línea de comandos con los siguientes comandos:
 
 ```bash
-python compare_csvs.py <file1> <file2> <delimiter> <order_by> <option> [--columns <excluded_columns>] [--output <output_file>]
+python compare_csvs.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]
 
 Examples:
 # Comparar valores en la columna ID
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' default
+python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option default
 
 # Mostrar registros que solo están en el archivo izquierdo
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' left_only
+python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option left_only
 
 # Mostrar registros que solo están en el archivo derecho
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' right_only
+python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option right_only
 
 # Mostrar registros que están en ambos archivos
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' both
+python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option both
 
 # Excluir columnas 0, 3 y 4 al realizar la comparación
-python3 reporting_compare.py file1.csv file2.csv '|' 'ID' default --columns "0 3 4"
+python3 reporting_compare.py file1.csv file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+
+# Encontrar duplicados en el archivo
+python3 main.py file1.csv '|'
 ```
 
 ## Comparación de archivos CSV en Python
@@ -125,15 +131,15 @@ Este código de Python compara dos archivos CSV y identifica las diferencias ent
 El código requiere los siguientes argumentos de entrada para funcionar correctamente:
 
 * `file1`: Ruta al primer archivo CSV a comparar
-* `file2`: Ruta al segundo archivo CSV a comparar
 * `delimiter`: Caracter delimitador utilizado en los archivos CSV
-* `order_by`: Columna(s) para ordenar los resultados de la comparación
-* `option`: Opción de comparación (left_only, right_only, both, o default)
 
 ## Argumentos opcionales
 
 El código también admite los siguientes argumentos opcionales para una mayor personalización:
 
+* `--file2`: Ruta al segundo archivo CSV a comparar
+* `--identifier`: Columna(s) para ordenar los resultados de la comparación
+* `--merge_option`: Opción de comparación (left_only, right_only, both, o default)
 * `--columns`: Lista separada por espacios de índices de columnas para excluir de la comparación
 * `--output`: Nombre del archivo de salida para almacenar los resultados de la comparación
 
