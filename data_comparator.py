@@ -1,6 +1,4 @@
-import os
 import pandas as pd
-from directory_manager import DirectoryManager
 from csv_handler import CSVHandler
 
 
