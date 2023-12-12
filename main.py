@@ -65,5 +65,5 @@ def main(args, base_path):
 
 if __name__ == '__main__':
     arguments = parse_args()
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    main(arguments, script_path)
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    main(arguments, base_path)
