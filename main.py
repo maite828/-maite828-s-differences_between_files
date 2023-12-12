@@ -52,12 +52,12 @@ def parse_args():
 
 
 def main(arguments, obj_handler, obj_comparator, obj_output_manager):
+    input_manager = obj_output_manager.create_directory(base_path, "input_files")
     if not arguments.file2:
-        df = obj_handler.read_csv(arguments.file1, arguments.delimiter)
+        df = obj_handler.read_csv(os.path.join(input_manager, arguments.file1), arguments.delimiter)
         obj_comparator.print_duplicates(df, arguments.file1)
         df.drop_duplicates()
     else:
-        input_manager = obj_output_manager.create_directory(base_path, "input_files")
         df1 = obj_handler.read_csv(os.path.join(input_manager, arguments.file1), arguments.delimiter, arguments.columns)
         df2 = obj_handler.read_csv(os.path.join(input_manager, arguments.file2), arguments.delimiter, arguments.columns)
 
