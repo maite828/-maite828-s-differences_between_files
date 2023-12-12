@@ -1,148 +1,25 @@
 #!/usr/bin/env python3
 import os
-
 import pandas as pd
 import argparse
 from tabulate import tabulate
 
-
-def directory_creation(base_path):
-    """
-    Create and return a function that creates a directory in the base_path.
-
-    Parameters:
-    - base_path (str): Base path for directory creation.
-
-    Returns:
-    - Callable: Function that takes a directory name and creates the directory in the base_path.
-      Returns the full path of the created directory or None if it already exists.
-    """
-    def create_directory(directory_name):
-        full_path = os.path.join(base_path, directory_name)
-        try:
-            os.makedirs(full_path)
-            print(f"Directory '{directory_name}' created at '{full_path}'")
-            return full_path
-        except FileExistsError:
-            return full_path
-
-    return create_directory
+from data_comparator import DataComparator
+from csv_handler import CSVHandler
 
 
-# Create a directory in the same location as the script
-script_path = os.path.dirname(os.path.realpath(__file__))
-directory_script_path = directory_creation(script_path)
-
-
-def create_dataframe(csv, delimiter, cols=None):
-    """
-    Create a DataFrame from a CSV file.
-
-    Parameters:
-    - csv (str): Path to the CSV file.
-    - delimiter (str): Delimiter used in the CSV file.
-    - cols (str): Columns to exclude (indices separated by space).
-
-    Returns:
-    - pd.DataFrame: DataFrame from the CSV file.
-    """
-    df = pd.read_csv(csv, sep=delimiter, engine='python')
-    if cols:
-        df.drop(df.columns[list(map(int, cols.split()))], axis=1, inplace=True)
-    return df
-
-
-def write_duplicates_output_file(df, source_file, output_file):
-    """
-    Writes a CSV file with the duplicates found to a DataFrame. The result includes the total number of duplicates in the file.
-
-    Parameters:
-    - df (pd.DataFrame): DataFrame to analyze.
-    - source_file (str): Name of the source file.
-    - output_file (str): Name of the output file.
-
-    Returns:
-    - None
-    """
-    duplicates = df[df.duplicated()]
-    num_duplicates = len(duplicates)
-    print(f"{source_file} contains: {num_duplicates} duplicates")
-    output_path = os.path.join(directory_script_path("output_files"), output_file)
-    duplicates.to_csv(output_path, index=False)
-
-
-def remove_duplicates(df):
-    """
-    Removes duplicates from a DataFrame.
-
-    Parameters:
-    - df (pd.DataFrame): DataFrame to analyze.
-
-    Returns:
-    - pd.DataFrame: DataFrame without duplicates.
-    """
-    return df.drop_duplicates()
-
-
-def compare_datasets(df1: pd.DataFrame, df2: pd.DataFrame, output_file, identifier, merge_option):
-    """
-    Compares two datasets and finds the differences.
-
-    Parameters:
-    - df_1 (pd.DataFrame): First DataFrame.
-    - df_2 (pd.DataFrame): Second DataFrame.
-    - output_file (str): Name of the output file.
-    - identifier (str): Column(s) to order the results by.
-    - merge_option (str): Comparison merge_option: left_only, right_only, both, default.
-
-    Returns:
-    - pd.DataFrame: DataFrame with the differences found.
-    """
-    comparison_df = df1.merge(df2, indicator=True, how='outer')
-    if merge_option == "default":
-        diff_df = comparison_df[comparison_df['_merge'] != 'both'].copy()
-    else:
-        diff_df = comparison_df[comparison_df['_merge'] == merge_option].copy()
-    diff_df.sort_values(identifier, inplace=True)
-    diff_df.to_csv(os.path.join(directory_script_path("output_files"), output_file), index=False)
-
-    return diff_df
-
-
-def is_valid_type(value):
-    """ Checks if the value is a valid type for comparison.
-
-    Parameters:
-    - value: Value to check.
-
-    Returns:
-    - bool: True if the value is a valid type for comparison, False otherwise.
-    """
-    return pd.notna(value) and not isinstance(value, list)
-
-
-def format_value(value):
-    if is_valid_type(value):
-        return str(value)
-    else:
-        return value
+def print_differences_details(differences, arguments):
+    if not differences.empty:
+        print("\nDetails on differences:")
+        print(tabulate(differences[[arguments.identifier, 'Column_Name', 'Left_Value', 'Right_Value']],
+                       headers='keys', tablefmt='psql'))
 
 
 def handle_type(value):
-    return format_value(value)
+    return str(value) if pd.notna(value) and not isinstance(value, list) else value
 
 
 def find_differences(group, identifier):
-    """
-    Finds differences in a group of data.
-
-    Parameters:
-    - group (pd.DataFrame): Data group.
-    - identifier (str): Column to order the results by.
-
-    Returns:
-    - pd.DataFrame: DataFrame with the differences found.
-    """
     diff_mask = (group.iloc[0] != group.iloc[1]).to_numpy()
     if diff_mask.any():
         different_columns = group.columns[diff_mask].tolist()
@@ -160,10 +37,41 @@ def find_differences(group, identifier):
     return pd.DataFrame()
 
 
-def main():
-    """
-    Main function that handles command line input and runs the comparison.
-    """
+def main(arguments, obj_handler, obj_comparator):
+    if not arguments.file2:
+        df = obj_handler.read_csv(arguments.file1, arguments.delimiter)
+        obj_comparator.print_duplicates(df, arguments.file1)
+        df.drop_duplicates()
+    else:
+        df1 = obj_handler.read_csv(arguments.file1, arguments.delimiter, arguments.columns)
+        df2 = obj_handler.read_csv(arguments.file2, arguments.delimiter, arguments.columns)
+
+        print("Duplicates:")
+        obj_comparator.print_duplicates(df1, arguments.file1)
+        obj_comparator.print_duplicates(df2, arguments.file2)
+
+        output_file = arguments.output or f'output_file_{arguments.merge_option}.csv'
+        result = obj_comparator.compare_datasets(df1.drop_duplicates(), df2.drop_duplicates(),
+                                                 output_file, arguments.identifier, arguments.merge_option)
+
+        print("\nSchemas:\n File1: {f1} {s1} \n File2: {f2} {s2} \n".format(
+            f1=arguments.file1, s1=df1.shape, f2=arguments.file2, s2=df2.shape))
+
+        result.groupby(['_merge'], observed=True).size()
+
+        result = result[result.duplicated(arguments.identifier, keep=False)]
+
+        print(f'The output with \'{arguments.merge_option.upper()}\' generates the following differences:\n')
+        print(result[[arguments.identifier, '_merge']])
+
+        df_no_join_col = result.drop('_merge', axis=1)
+        differences = df_no_join_col.groupby(arguments.identifier).apply(find_differences,
+                                                                         identifier=arguments.identifier).dropna()
+
+        print_differences_details(differences, arguments)
+
+
+def parse_args():
     parser = argparse.ArgumentParser(description="Compare two CSV files and find differences.")
     parser.add_argument("file1", help="Path to the first CSV file")
     parser.add_argument("--file2", help="Path to the second CSV file")
@@ -173,45 +81,12 @@ def main():
     parser.add_argument("--columns", help="Columns to exclude (space-separated indices)")
     parser.add_argument("--output", help="Output file name")
 
-    args = parser.parse_args()
-
-    directory_script_path("output_files")
-
-    if not args.file2:
-        df = create_dataframe(args.file1, args.delimiter)
-        write_duplicates_output_file(df, args.file1, "duplicates_" + args.file1)
-        remove_duplicates(df)
-    else:
-        df1 = create_dataframe(args.file1, args.delimiter, args.columns)
-        df2 = create_dataframe(args.file2, args.delimiter, args.columns)
-
-        print("Duplicates:")
-        write_duplicates_output_file(df1, args.file1, "duplicates_" + args.file1)
-        write_duplicates_output_file(df2, args.file2, "duplicates_" + args.file2)
-
-        output_file = args.output or f'output_file_{args.merge_option}.csv'
-        result = compare_datasets(remove_duplicates(df1), remove_duplicates(df2), output_file, args.identifier,
-                                  args.merge_option)
-
-        print("\nSchemas:\n File1: {f1} {s1} \n File2: {f2} {s2} \n".format(
-            f1=args.file1, s1=df1.shape, f2=args.file2, s2=df2.shape))
-
-        result.groupby(['_merge'], observed=True).size()
-
-        result = result[result.duplicated(args.identifier, keep=False)]
-
-        print(f'The output with \'{args.merge_option.upper()}\' generates the following differences:\n')
-        print(result[[args.identifier, '_merge']])
-
-        df_no_join_col = result.drop('_merge', axis=1)
-        differences = df_no_join_col.groupby(args.identifier).apply(find_differences,
-                                                                    identifier=args.identifier).dropna()
-
-        if not differences.empty:
-            print("\nDetails on differences:")
-            print(tabulate(differences[[args.identifier, 'Column_Name', 'Left_Value', 'Right_Value']],
-                           headers='keys', tablefmt='psql'))
+    return parser.parse_args()
 
 
 if __name__ == '__main__':
-    main()
+    args = parse_args()
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    comparator = DataComparator(script_path)
+    csv_handler = CSVHandler()
+    main(args, csv_handler, comparator)
