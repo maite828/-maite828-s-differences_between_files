@@ -57,7 +57,7 @@ Writes a CSV file with the duplicates found to a DataFrame and displays the tota
 * `remove_duplicates()`
 Remove duplicates from a DataFrame.
 * `dataset_difference()`: Performs the actual comparison between the two DataFrames. Creates a merged DataFrame and filters based on the chosen comparison option. Then, sorts the results by the specified columns and saves them to the output file (if provided).
-* `manejar_tipo()`: Handles missing values and converts values to strings for printing.
+* `handle_types()`: Handles missing values and converts values to strings for printing.
 * `find_differences()`: Identifies and extracts the differences between corresponding rows in a group. Creates a mask indicating the columns with differences and extracts the original and different values for those columns. Then, constructs a DataFrame containing the identified differences.
 * `main()`: Parses arguments, calls other functions to perform the comparison, and prints the results.
 
