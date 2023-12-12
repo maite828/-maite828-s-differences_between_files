@@ -25,7 +25,6 @@ python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' -
 python3 main.py file1.csv '|'
 ```
 
-
 ## Comparing CSV files in Python
 
 This Python code compares two CSV files and identifies the differences between them. It can be used to compare datasets, detect discrepancies, and ensure data consistency.

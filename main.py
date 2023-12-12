@@ -157,7 +157,8 @@ def main():
         write_duplicates_output_file(df2, args.file2, "duplicates_" + args.file2)
 
         output_file = args.output or f'output_file_{args.merge_option}.csv'
-        result = compare_datasets(remove_duplicates(df1), remove_duplicates(df2), output_file, args.identifier, args.merge_option)
+        result = compare_datasets(remove_duplicates(df1), remove_duplicates(df2), output_file, args.identifier,
+                                  args.merge_option)
 
         print("\nSchemas:\n File1: {f1} {s1} \n File2: {f2} {s2} \n".format(
             f1=args.file1, s1=df1.shape, f2=args.file2, s2=df2.shape))
@@ -170,12 +171,13 @@ def main():
         print(result[[args.identifier, '_merge']])
 
         df_no_join_col = result.drop('_merge', axis=1)
-        differences = df_no_join_col.groupby(args.identifier).apply(find_differences, identifier=args.identifier).dropna()
+        differences = df_no_join_col.groupby(args.identifier).apply(find_differences,
+                                                                    identifier=args.identifier).dropna()
 
         if not differences.empty:
             print("\nDetails on differences:")
             print(tabulate(differences[[args.identifier, 'Column_Name', 'Left_Value', 'Right_Value']],
-                headers='keys', tablefmt='psql'))
+                           headers='keys', tablefmt='psql'))
 
 
 if __name__ == '__main__':
