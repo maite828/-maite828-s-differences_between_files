@@ -6,6 +6,7 @@ from tabulate import tabulate
 
 from data_comparator import DataComparator
 from csv_handler import CSVHandler
+from directory_manager import DirectoryManager
 
 
 def print_differences_details(differences, arguments):
@@ -37,14 +38,15 @@ def find_differences(group, identifier):
     return pd.DataFrame()
 
 
-def main(arguments, obj_handler, obj_comparator):
+def main(arguments, obj_handler, obj_comparator, obj_output_manager):
     if not arguments.file2:
         df = obj_handler.read_csv(arguments.file1, arguments.delimiter)
         obj_comparator.print_duplicates(df, arguments.file1)
         df.drop_duplicates()
     else:
-        df1 = obj_handler.read_csv(arguments.file1, arguments.delimiter, arguments.columns)
-        df2 = obj_handler.read_csv(arguments.file2, arguments.delimiter, arguments.columns)
+        input_manager = obj_output_manager.create_directory(base_path, "input_files")
+        df1 = obj_handler.read_csv(os.path.join(input_manager, arguments.file1), arguments.delimiter, arguments.columns)
+        df2 = obj_handler.read_csv(os.path.join(input_manager, arguments.file2), arguments.delimiter, arguments.columns)
 
         print("Duplicates:")
         obj_comparator.print_duplicates(df1, arguments.file1)
@@ -86,7 +88,8 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    comparator = DataComparator(script_path)
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    output_manager = DirectoryManager()
     csv_handler = CSVHandler()
-    main(args, csv_handler, comparator)
+    comparator = DataComparator(base_path, output_manager, csv_handler)
+    main(args, csv_handler, comparator, output_manager)
