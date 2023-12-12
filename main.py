@@ -31,8 +31,10 @@ def main(args, base_path):
     if not args.file2:
         df = CSVHandler.read_csv(base_path, args.file1, args.delimiter)
         comparator = DataComparator()
-        comparator.duplicates_dt(df, args.file1)
-        df.drop_duplicates()
+        CSVHandler.write_csv(comparator.duplicates_dt(df, args.file1), base_path, f"duplicates_{args.file1}")
+        # df.drop_duplicates()
+        duplicates = CSVHandler.read_csv(base_path, f"duplicates_{args.file1}", args.delimiter, args.columns, "output_files")
+        print(tabulate(duplicates, headers='keys', tablefmt='psql'))
     else:
         df1 = CSVHandler.read_csv(base_path, args.file1, args.delimiter, args.columns)
         df2 = CSVHandler.read_csv(base_path, args.file2, args.delimiter, args.columns)
