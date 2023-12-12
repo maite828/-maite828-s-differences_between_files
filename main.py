@@ -1,8 +1,37 @@
 #!/usr/bin/env python3
+import os
 
 import pandas as pd
 import argparse
 from tabulate import tabulate
+
+
+def directory_creation(base_path):
+    """
+    Create and return a function that creates a directory in the base_path.
+
+    Parameters:
+    - base_path (str): Base path for directory creation.
+
+    Returns:
+    - Callable: Function that takes a directory name and creates the directory in the base_path.
+      Returns the full path of the created directory or None if it already exists.
+    """
+    def create_directory(directory_name):
+        full_path = os.path.join(base_path, directory_name)
+        try:
+            os.makedirs(full_path)
+            print(f"Directory '{directory_name}' created at '{full_path}'")
+            return full_path
+        except FileExistsError:
+            return full_path
+
+    return create_directory
+
+
+# Create a directory in the same location as the script
+script_path = os.path.dirname(os.path.realpath(__file__))
+directory_script_path = directory_creation(script_path)
 
 
 def create_dataframe(csv, delimiter, cols=None):
@@ -38,7 +67,8 @@ def write_duplicates_output_file(df, source_file, output_file):
     duplicates = df[df.duplicated()]
     num_duplicates = len(duplicates)
     print(f"{source_file} contains: {num_duplicates} duplicates")
-    duplicates.to_csv(output_file, index=False)
+    output_path = os.path.join(directory_script_path("output_files"), output_file)
+    duplicates.to_csv(output_path, index=False)
 
 
 def remove_duplicates(df):
@@ -74,7 +104,8 @@ def compare_datasets(df1: pd.DataFrame, df2: pd.DataFrame, output_file, identifi
     else:
         diff_df = comparison_df[comparison_df['_merge'] == merge_option].copy()
     diff_df.sort_values(identifier, inplace=True)
-    diff_df.to_csv(output_file, index=False)
+    diff_df.to_csv(os.path.join(directory_script_path("output_files"), output_file), index=False)
+
     return diff_df
 
 
@@ -143,6 +174,8 @@ def main():
     parser.add_argument("--output", help="Output file name")
 
     args = parser.parse_args()
+
+    directory_script_path("output_files")
 
     if not args.file2:
         df = create_dataframe(args.file1, args.delimiter)
