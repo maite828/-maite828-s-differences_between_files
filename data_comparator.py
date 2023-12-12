@@ -7,10 +7,10 @@ from csv_handler import CSVHandler
 class DataComparator:
 
     @staticmethod
-    def duplicates_dt(df, source_file):
+    def duplicates_dt(df, file_name):
         duplicates = df[df.duplicated()]
         num_duplicates = len(duplicates)
-        print(f"{source_file} contains: {num_duplicates} duplicates")
+        print(f"{file_name} contains: {num_duplicates} duplicates")
         return duplicates
 
     @staticmethod

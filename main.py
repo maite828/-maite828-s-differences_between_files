@@ -7,10 +7,10 @@ from data_comparator import DataComparator
 from csv_handler import CSVHandler
 
 
-def print_differences_details(differences, arguments):
+def print_differences_details(differences, argument):
     if not differences.empty:
         print("\nDetails on differences:")
-        print(tabulate(differences[[arguments.identifier, 'Column_Name', 'Left_Value', 'Right_Value']],
+        print(tabulate(differences[[argument.identifier, 'Column_Name', 'Left_Value', 'Right_Value']],
                        headers='keys', tablefmt='psql'))
 
 
@@ -32,19 +32,19 @@ def main(args, base_path):
         df = CSVHandler.read_csv(base_path, args.file1, args.delimiter)
         comparator = DataComparator()
         comparator.duplicates_dt(df, args.file1)
-        df = df.drop_duplicates()
+        df.drop_duplicates()
     else:
         df1 = CSVHandler.read_csv(base_path, args.file1, args.delimiter, args.columns)
         df2 = CSVHandler.read_csv(base_path, args.file2, args.delimiter, args.columns)
 
         print("Duplicates:")
         comparator = DataComparator()
-        comparator.duplicates_dt(df1, args.file1)
-        comparator.duplicates_dt(df2, args.file2)
+        CSVHandler.write_csv(comparator.duplicates_dt(df1, args.file1), base_path, f"duplicates_{args.file1}")
+        CSVHandler.write_csv(comparator.duplicates_dt(df2, args.file2), base_path, f"duplicates_{args.file2}")
 
         output_file = args.output or f'output_file_{args.merge_option}.csv'
-        result = comparator.compare_dt(df1.drop_duplicates(), df2.drop_duplicates(),
-                                       args.identifier, args.merge_option)
+        result = comparator.compare_dt(df1.drop_duplicates(), df2.drop_duplicates(), args.identifier, args.merge_option)
+        CSVHandler.write_csv(result, base_path, output_file)
 
         print("\nSchemas:\n File1: {f1} {s1} \n File2: {f2} {s2} \n".format(
             f1=args.file1, s1=df1.shape, f2=args.file2, s2=df2.shape))
