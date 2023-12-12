@@ -176,25 +176,3 @@ El código de Python proporcionado una herramienta integral para comparar archiv
     * `default`: Se muestran todas las diferencias, excepto las que están presentes en ambos archivos.
 * La función `manejar_tipo()` se utiliza para convertir los valores a cadenas para imprimirlos. Esto es necesario para que los valores NaN se impriman correctamente.
 * La función `encontrar_diferencias()` utiliza una máscara para identificar las columnas con diferencias. Esta máscara se crea utilizando el método `isna()` para comprobar si los valores de las columnas son NaN.
-
-* -------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Función dataframe_create:
-
-Esta función lee los dos archivos CSV en DataFrames de Pandas y, opcionalmente, elimina las columnas especificadas según el argumento --columns.
-
-Función dataset_difference:
-
-Esta función realiza la comparación real entre los dos DataFrames. Crea un DataFrame fusionado y filtra según la opción de comparación elegida (left_only, right_only, both, o default). Luego, ordena los resultados por las columnas especificadas (order_by) y los guarda en el archivo de salida (si se proporciona).
-
-Función manejar_tipo:
-
-Esta función maneja los valores perdidos y convierte los valores a cadenas para imprimirlos. Comprueba los valores NaN y los devuelve tal cual, o convierte otros valores a cadenas si no son cadenas ya.
-
-Función encontrar_diferencias:
-
-Esta función identifica y extrae las diferencias entre las filas correspondientes en un grupo (LEGALENTITYID). Crea una máscara que indica las columnas con diferencias y extrae los valores originales y diferentes para esas columnas. Luego, construye un DataFrame que contiene las diferencias identificadas.
-
-Función main:
-
-Esta es la función principal que analiza los argumentos, llama a otras funciones para realizar la comparación e imprime los resultados. Se encarga del análisis de argumentos, llama a las funciones dataframe_create y dataset_difference para realizar la comparación, imprime información resumida sobre los esquemas y las diferencias, y comprueba las filas duplicadas y las diferencias asociadas.
