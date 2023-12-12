@@ -78,17 +78,27 @@ def compare_datasets(df1: pd.DataFrame, df2: pd.DataFrame, output_file, identifi
     return diff_df
 
 
-def handle_type(value):
-    """
-    Handles the data type for printing.
+def is_valid_type(value):
+    """ Checks if the value is a valid type for comparison.
 
     Parameters:
-    - value: Value to handle.
+    - value: Value to check.
 
     Returns:
-    - str: Value converted to a string.
+    - bool: True if the value is a valid type for comparison, False otherwise.
     """
-    return str(value) if pd.notna(value) and not isinstance(value, list) else value
+    return pd.notna(value) and not isinstance(value, list)
+
+
+def format_value(value):
+    if is_valid_type(value):
+        return str(value)
+    else:
+        return value
+
+
+def handle_type(value):
+    return format_value(value)
 
 
 def find_differences(group, identifier):
