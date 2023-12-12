@@ -80,7 +80,7 @@ The provided Python code provides a comprehensive tool for comparing CSV files a
     * `right_only`: Only shows the differences in the data from the second file.
     * `both`: Shows all differences, including those that are present in both files.
     * `default`: Shows all differences, except those that are present in both files.
-* The `manejar_tipo()` function is used to convert the values to strings for printing. This is necessary for NaN values to be printed correctly.
+* The `handle_types()` function is used to convert the values to strings for printing. This is necessary for NaN values to be printed correctly.
 * The `find_differences()` function uses a mask to identify the columns with differences. This mask is created using the `isna()` method to check if the values in the columns are NaN.
 
 * -------------------------------------------------------------------------------------------------------------------------------------
