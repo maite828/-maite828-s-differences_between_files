@@ -49,7 +49,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def process_single_file(csv_handler, data_comparator, base_path, file_name, delimiter, cols):
+def process_single_file(csv_handler, data_comparator, base_path, file_name, delimiter):
     """
     Process a single CSV file: find duplicates and print details.
 
@@ -59,7 +59,6 @@ def process_single_file(csv_handler, data_comparator, base_path, file_name, deli
         base_path (str): Base path of the script.
         file_name (str): Name of the CSV file.
         delimiter (str): Delimiter used in the CSV file.
-        cols (str): Columns to exclude (space-separated indices).
 
     Returns:
         None
@@ -140,8 +139,7 @@ def main(arguments, base_path):
     data_comparator = DataComparator()
 
     if not arguments.file2:
-        process_single_file(csv_handler, data_comparator, base_path, arguments.file1, arguments.delimiter,
-                            arguments.cols_index)
+        process_single_file(csv_handler, data_comparator, base_path, arguments.file1, arguments.delimiter)
     else:
         process_two_files(csv_handler, data_comparator, base_path, arguments.file1, arguments.file2, arguments.delimiter,
                           arguments.identifier, arguments.cols_index, arguments.output, arguments.merge_option)
