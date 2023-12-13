@@ -1,136 +1,319 @@
-## Uso
+# CSV File Comparer
 
-This Python script compares two CSV files and finds the differences between them.:
+This code compares two CSV files and finds the differences between them. The code can be used to compare files of any size or format.
 
-```bash
-python compare_csvs.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]
+## Overview
+
+The code works as follows:
+
+1. The data from the two CSV files is read.
+2. The data from the two CSV files is compared.
+3. The differences between the two CSV files are found.
+
+## Functions
+
+The code contains the following functions:
+
+* `parse_args()`: Parses command-line arguments.
+* `process_single_file()`: Compares a single CSV file.
+* `process_two_files()`: Compares two CSV files.
+* `read_csv()`: Reads a CSV file.
+* `compare_dt()`: Compares two DataFrames.
+* `find_differences()`: Finds the differences between two DataFrames.
+
+## Input and output
+
+The input and output of each function is described below:
+
+**`parse_args()`**
+
+* Input:
+    * `file1`: Path to the first CSV file.
+    * `file2`: Path to the second CSV file.
+    * `delimiter`: Delimiter used in the CSV files.
+    * `identifier`: Column(s) to order the results.
+    * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
+    * `columns`: Columns to exclude (space-separated indices).
+    * `output`: Output file name.
+* Output:
+    * `argparse.Namespace` object with the processed arguments.
+
+**`process_single_file()`**
+
+* Input:
+    * `csv_handler`: `CSVHandler` object.
+    * `data_comparator`: `DataComparator` object.
+    * `arguments`: `argparse.Namespace` object with the processed arguments.
+    * `base_path`: Path to the base directory.
+* Output:
+    None.
+
+**`process_two_files()`**
+
+* Input:
+    * `csv_handler`: `CSVHandler` object.
+    * `data_comparator`: `DataComparator` object.
+    * `arguments`: `argparse.Namespace` object with the processed arguments.
+    * `base_path`: Path to the base directory.
+* Output:
+    None.
+
+**`read_csv()`**
+
+* Input:
+    * `csv_handler`: `CSVHandler` object.
+    * `path`: Path to the CSV file.
+    * `delimiter`: Delimiter used in the CSV file.
+    * `columns`: Columns to exclude (space-separated indices).
+* Output:
+    `DataFrame` with the data from the CSV file.
+
+**`compare_dt()`**
+
+* Input:
+    * `df1`: `DataFrame` with the data from the first CSV file.
+    * `df2`: `DataFrame` with the data from the second CSV file.
+    * `identifier`: Column(s) to order the results.
+    * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
+* Output:
+    `DataFrame` with the differences between the two DataFrames.
+
+**`find_differences()`**
+
+* Input:
+    * `df`: `DataFrame` with the differences between the two DataFrames.
+    * `identifier`: Column(s) to order the results.
+* Output:
+    `DataFrame` with detailed differences between the two DataFrames
+
+## Ejemplos de uso
+
+### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
+* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
 
 Examples:
-# Compare values ​​in the ID column
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
+```bash
+# Compare values in the ID column
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
+```
 
+```bash
 # Show records that are only in the left file
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option left_only
+python3 main.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_option left_only
+```
 
+```bash
 # Show records that are only in the right file
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
+```
 
+```bash
 # Show records that are in both files
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
+```
 
-# Exclude columns 0, 3 and 4 when comparing
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+```bash
+# Exclude columns 0, 3, and 4 when performing the comparison
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+```
 
-# Find duplicates in file
+### Find duplicates in the file
+* `python3 main.py <file1> <delimiter>`
+
+Examples:
+```bash
 python3 main.py file1.csv '|'
 ```
 
-## Comparing CSV files in Python
+## Description
 
-This Python code compares two CSV files and identifies the differences between them. It can be used to compare datasets, detect discrepancies, and ensure data consistency.
+This document provides examples of how to use the `main.py` script to compare two CSV files or find duplicates in a file.
+
+## Command line arguments
+
+The `reporting_compare.py` script takes the following command line arguments:
+
+* `file1` and `file2`: The names of the two CSV files to be compared or the name of the file to be searched for duplicates.
+* `delimiter`: The delimiter used to separate the columns in the CSV files.
+* `--identifier`: The name of the column to use to identify duplicate records.
+* `--merge_option`: The option to use when merging records with duplicate identifiers.
+* `--columns`: A comma-separated list of columns to exclude from the comparison.
+
+## Merge options
+
+The `--merge_option` argument can have one of the following values:
+
+* `default`: Merge records with duplicate identifiers by combining the values of all columns.
+* `left_only`: Keep only the records from the left file.
+* `right_only`: Keep only the records from the right file.
+* `both`: Keep all records, including duplicates.
 
 ## Input arguments
 
-The code requires the following input arguments to function properly:
+To find duplicates in a file, use the following command:
 
-* `file1`: Path to the first CSV file to be compared
-* `delimiter`: Delimiter character used in the CSV files
+* `file1`: **Path to the first CSV file to compare**
+* `delimiter`: **Delimiter character used in the CSV files**
 
 ## Optional arguments
 
-The code also supports the following optional arguments for further customization:
+The code also supports the following optional arguments for greater customization:
 
-* `--file2`: Path to the second CSV file to be compared
-* `--identifier`: Column(s) to order the comparison results by
-* `--merge_option`: Comparison option (left_only, right_only, both, or default)
-* `--columns`: Space-separated list of column indices to exclude from the comparison
-* `--output`: Name of the output file to store the comparison results
-
-## Code breakdown
-
-The code is divided into the following functions:
-
-* `dataframe_create()`: Reads the two CSV files into Pandas DataFrames and optionally drops specified columns.
-* `write_duplicates_output_file()`
-Writes a CSV file with the duplicates found to a DataFrame and displays the total number of duplicates in the console.
-* `remove_duplicates()`
-Remove duplicates from a DataFrame.
-* `dataset_difference()`: Performs the actual comparison between the two DataFrames. Creates a merged DataFrame and filters based on the chosen comparison option. Then, sorts the results by the specified columns and saves them to the output file (if provided).
-* `handle_types()`: Handles missing values and converts values to strings for printing.
-* `find_differences()`: Identifies and extracts the differences between corresponding rows in a group. Creates a mask indicating the columns with differences and extracts the original and different values for those columns. Then, constructs a DataFrame containing the identified differences.
-* `main()`: Parses arguments, calls other functions to perform the comparison, and prints the results.
-
-## Addressing warnings and errors
-
-The provided code addresses two FutureWarnings and an error related to multi-dimensional indexing:
-
-* **FutureWarning: `observed=False` Deprecation:** To avoid this warning and maintain the current behavior, explicitly pass `observed=False` to the `groupby()` method.
-* **FutureWarning: `DataFrame.applymap` Deprecation:** Replace the `applymap()` call with `map()`.
-* **Error: Multi-dimensional Indexing:** Convert the DataFrame to a NumPy array before indexing using the `to_numpy()` method.
+* `--file2`: **Path to the second CSV file to compare**
+* `--identifier`: **Column(s) to use to sort the results of the comparison**
+* `--merge_option`: **Comparison option (left_only, right_only, both, or default)**
+* `--columns`: **List of column indices separated by spaces to exclude from the comparison**
+* `--output`: **Name of the output file to store the results of the comparison**
 
 ## Conclusion
 
-The provided Python code provides a comprehensive tool for comparing CSV files and identifying the differences between them. It allows for flexible comparison options, handles missing values, and provides detailed information about the differences.
+The Python code provided is a comprehensive tool for comparing CSV files and identifying differences between them. It allows for flexible comparison options, handles missing values, and provides detailed information about the differences.
 
 ## Additional details
 
-* The `option` argument is used to specify what type of differences should be searched for. The available options are:
-    * `left_only`: Only shows the differences in the data from the first file.
-    * `right_only`: Only shows the differences in the data from the second file.
-    * `both`: Shows all differences, including those that are present in both files.
-    * `default`: Shows all differences, except those that are present in both files.
-* The `handle_types()` function is used to convert the values to strings for printing. This is necessary for NaN values to be printed correctly.
-* The `find_differences()` function uses a mask to identify the columns with differences. This mask is created using the `isna()` method to check if the values in the columns are NaN.
+* The `option` argument is used to specify what type of differences to look for. The available options are:
+    * `left_only`: **Only shows differences in the data of the first file**
+    * `right_only`: **Only shows differences in the data of the second file**
+    * `both`: **Shows all differences, including those that are present in both files**
+    * `default`: **Shows all differences except those that are present in both files**
 
-* -------------------------------------------------------------------------------------------------------------------------------------
+
 
 # Español
+## Comparador de archivos CSV
 
-# Comparación de archivos CSV
+Este código compara dos archivos CSV y encuentra las diferencias entre ellos. El código se puede utilizar para comparar archivos de cualquier tamaño o formato.
 
-Este script en Python compara dos archivos CSV y encuentra las diferencias entre ellos.
+## Descripción general
 
-## Requisitos
-- Asegúrate de tener la biblioteca `pandas` instalada. Puedes instalarla ejecutando `pip install pandas`.
-- Además, se utiliza la biblioteca `tabulate` para imprimir tablas en la consola. Puedes instalarla con `pip install tabulate`.
+El código funciona de la siguiente manera:
 
-## Uso
+1. Se leen los datos de los dos archivos CSV.
+2. Se comparan los datos de los dos archivos CSV.
+3. Se encuentran las diferencias entre los dos archivos CSV.
 
-El script se ejecuta desde la línea de comandos con los siguientes comandos:
+## Funciones
 
-```bash
-python compare_csvs.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]
+El código contiene las siguientes funciones:
+
+* `parse_args()`: Parsea los argumentos de la línea de comandos.
+* `process_single_file()`: Compara un solo archivo CSV.
+* `process_two_files()`: Compara dos archivos CSV.
+* `read_csv()`: Lee un archivo CSV.
+* `compare_dt()`: Compara dos DataFrames.
+* `find_differences()`: Encuentra las diferencias entre dos DataFrames.
+
+## Entrada y salida
+
+La entrada y salida de cada función se describe a continuación:
+
+**`parse_args()`**
+
+* Entrada:
+    * `file1`: Ruta al primer archivo CSV.
+    * `file2`: Ruta al segundo archivo CSV.
+    * `delimiter`: Delimitador utilizado en los archivos CSV.
+    * `identifier`: Columna(s) para ordenar los resultados.
+    * `merge_option`: Opción de comparación: `left_only`, `right_only`, `both`, o `default`.
+    * `columns`: Columnas para excluir (índices separados por espacios).
+    * `output`: Nombre del archivo de salida.
+* Salida:
+    * Objeto `argparse.Namespace` con los argumentos procesados.
+
+**`process_single_file()`**
+
+* Entrada:
+    * `csv_handler`: Objeto `CSVHandler`.
+    * `data_comparator`: Objeto `DataComparator`.
+    * `arguments`: Objeto `argparse.Namespace` con los argumentos procesados.
+    * `base_path`: Ruta al directorio base.
+* Salida:
+    None.
+
+**`process_two_files()`**
+
+* Entrada:
+    * `csv_handler`: Objeto `CSVHandler`.
+    * `data_comparator`: Objeto `DataComparator`.
+    * `arguments`: Objeto `argparse.Namespace` con los argumentos procesados.
+    * `base_path`: Ruta al directorio base.
+* Salida:
+    None.
+
+**`read_csv()`**
+
+* Entrada:
+    * `csv_handler`: Objeto `CSVHandler`.
+    * `path`: Ruta al archivo CSV.
+    * `delimiter`: Delimitador utilizado en el archivo CSV.
+    * `columns`: Columnas para excluir (índices separados por espacios).
+* Salida:
+    `DataFrame` con los datos del archivo CSV.
+
+**`compare_dt()`**
+
+* Entrada:
+    * `df1`: DataFrame con los datos del primer archivo CSV.
+    * `df2`: DataFrame con los datos del segundo archivo CSV.
+    * `identifier`: Columna(s) para ordenar los resultados.
+    * `merge_option`: Opción de comparación: `left_only`, `right_only`, `both`, o `default`.
+* Salida:
+    `DataFrame` con las diferencias entre los dos DataFrames.
+
+**`find_differences()`**
+
+* Entrada:
+    * `df`: DataFrame con las diferencias entre los dos DataFrames.
+    * `identifier`: Columna(s) para ordenar los resultados.
+* Salida:
+    `DataFrame` con las diferencias detalladas entre los dos DataFrames.
+
+## Ejemplos de uso
+
+### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
+* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
 
 Examples:
+```bash
 # Comparar valores en la columna ID
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
+```
 
+```bash
 # Mostrar registros que solo están en el archivo izquierdo
-python3 reporting_compare.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_option left_only
+python3 main.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_option left_only
+```
 
+```bash
 # Mostrar registros que solo están en el archivo derecho
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
+`python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
+```
 
+```bash
 # Mostrar registros que están en ambos archivos
-python3 reporting_compare.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
+```
 
+```bash
 # Excluir columnas 0, 3 y 4 al realizar la comparación
-python3 reporting_compare.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+python3 main.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+```
 
+### Para encontrar duplicados en un archivo usa el siguiente comando:
+* `python3 main.py <file1> <file2> <delimiter>`
+
+Examples:
+```bash
 # Encontrar duplicados en el archivo
 python3 main.py file1.csv '|'
 ```
-
-## Comparación de archivos CSV en Python
-
-Este código de Python compara dos archivos CSV y identifica las diferencias entre ellos. Se puede utilizar para comparar conjuntos de datos, detectar discrepancias y garantizar la coherencia de los datos.
 
 ## Argumentos de entrada
 
 El código requiere los siguientes argumentos de entrada para funcionar correctamente:
 
 * `file1`: Ruta al primer archivo CSV a comparar
-* `delimiter`: Caracter delimitador utilizado en los archivos CSV
+* `delimiter`: Character delimitador utilizado en los archivos CSV
 
 ## Argumentos opcionales
 
@@ -141,26 +324,6 @@ El código también admite los siguientes argumentos opcionales para una mayor p
 * `--merge_option`: Opción de comparación (left_only, right_only, both, o default)
 * `--columns`: Lista separada por espacios de índices de columnas para excluir de la comparación
 * `--output`: Nombre del archivo de salida para almacenar los resultados de la comparación
-
-## Desglose del código
-
-El código se divide en las siguientes funciones:
-
-* `dataframe_create()`: Lee los archivos CSV y convierte a DataFrames de Pandas y, opcionalmente, elimina columnas especificadas.
-* `write_duplicates_output_file()`: Escribe un archivo CSV con los duplicados encontrados en un DataFrame y muestra el número total de duplicados en la consola.
-* `remove_duplicates()`: Elimina duplicados de un DataFrame.
-* `dataset_difference()`: Realiza la comparación real entre los dos DataFrames. Crea un DataFrame fusionado y filtra según la opción de comparación elegida. Luego, ordena los resultados por las columnas especificadas y los guarda en el archivo de salida (si se proporciona).
-* `manejar_tipo()`: Maneja los valores perdidos y convierte los valores a cadenas para imprimirlos.
-* `encontrar_diferencias()`: Identifica y extrae las diferencias entre las filas correspondientes en un grupo. Crea una máscara que indica las columnas con diferencias y extrae los valores originales y diferentes para esas columnas. Luego, construye un DataFrame que contiene las diferencias identificadas.
-* `main()`: Analiza los argumentos, llama a otras funciones para realizar la comparación e imprime los resultados.
-
-## Abordando advertencias y errores
-
-El código proporcionado aborda dos advertencias futuras y un error relacionado con el índice multidimensional:
-
-* **FutureWarning: `observed=False` Deprecation:** Para evitar esta advertencia y mantener el comportamiento actual, pase explícitamente `observed=False` al método `groupby()`.
-* **FutureWarning: `DataFrame.applymap` Deprecation:** Reemplace la llamada a `applymap()` con `map()`.
-* **Error: Multi-dimensional Indexing:** Convierta el DataFrame en una matriz NumPy antes de indexarlo usando el método `to_numpy()`.
 
 ## Conclusión
 
@@ -173,5 +336,3 @@ El código de Python proporcionado una herramienta integral para comparar archiv
     * `right_only`: Solo se muestran las diferencias en los datos del segundo archivo.
     * `both`: Se muestran todas las diferencias, incluidas las que están presentes en ambos archivos.
     * `default`: Se muestran todas las diferencias, excepto las que están presentes en ambos archivos.
-* La función `manejar_tipo()` se utiliza para convertir los valores a cadenas para imprimirlos. Esto es necesario para que los valores NaN se impriman correctamente.
-* La función `encontrar_diferencias()` utiliza una máscara para identificar las columnas con diferencias. Esta máscara se crea utilizando el método `isna()` para comprobar si los valores de las columnas son NaN.
