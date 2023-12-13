@@ -10,85 +10,9 @@ The code works as follows:
 2. The data from the two CSV files is compared.
 3. The differences between the two CSV files are found.
 
-## Functions
+## Usage examples
 
-The code contains the following functions:
-
-* `parse_args()`: Parses command-line arguments.
-* `process_single_file()`: Compares a single CSV file.
-* `process_two_files()`: Compares two CSV files.
-* `read_csv()`: Reads a CSV file.
-* `compare_dt()`: Compares two DataFrames.
-* `find_differences()`: Finds the differences between two DataFrames.
-
-## Input and output
-
-The input and output of each function is described below:
-
-**`parse_args()`**
-
-* Input:
-    * `file1`: Path to the first CSV file.
-    * `file2`: Path to the second CSV file.
-    * `delimiter`: Delimiter used in the CSV files.
-    * `identifier`: Column(s) to order the results.
-    * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
-    * `columns`: Columns to exclude (space-separated indices).
-    * `output`: Output file name.
-* Output:
-    * `argparse.Namespace` object with the processed arguments.
-
-**`process_single_file()`**
-
-* Input:
-    * `csv_handler`: `CSVHandler` object.
-    * `data_comparator`: `DataComparator` object.
-    * `arguments`: `argparse.Namespace` object with the processed arguments.
-    * `base_path`: Path to the base directory.
-* Output:
-    None.
-
-**`process_two_files()`**
-
-* Input:
-    * `csv_handler`: `CSVHandler` object.
-    * `data_comparator`: `DataComparator` object.
-    * `arguments`: `argparse.Namespace` object with the processed arguments.
-    * `base_path`: Path to the base directory.
-* Output:
-    None.
-
-**`read_csv()`**
-
-* Input:
-    * `csv_handler`: `CSVHandler` object.
-    * `path`: Path to the CSV file.
-    * `delimiter`: Delimiter used in the CSV file.
-    * `columns`: Columns to exclude (space-separated indices).
-* Output:
-    `DataFrame` with the data from the CSV file.
-
-**`compare_dt()`**
-
-* Input:
-    * `df1`: `DataFrame` with the data from the first CSV file.
-    * `df2`: `DataFrame` with the data from the second CSV file.
-    * `identifier`: Column(s) to order the results.
-    * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
-* Output:
-    `DataFrame` with the differences between the two DataFrames.
-
-**`find_differences()`**
-
-* Input:
-    * `df`: `DataFrame` with the differences between the two DataFrames.
-    * `identifier`: Column(s) to order the results.
-* Output:
-    `DataFrame` with detailed differences between the two DataFrames
-
-## Ejemplos de uso
-
-### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
+### To compare two CSV files, you can use the following commands:
 * `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
 
 Examples:
@@ -165,6 +89,83 @@ The code also supports the following optional arguments for greater customizatio
 * `--columns`: **List of column indices separated by spaces to exclude from the comparison**
 * `--output`: **Name of the output file to store the results of the comparison**
 
+## Functions
+
+The code contains the following functions:
+
+* `parse_args()`: Parses command-line arguments.
+* `process_single_file()`: Compares a single CSV file.
+* `process_two_files()`: Compares two CSV files.
+* `read_csv()`: Reads a CSV file.
+* `compare_dt()`: Compares two DataFrames.
+* `find_differences()`: Finds the differences between two DataFrames.
+
+## Input and output
+
+The input and output of each function is described below:
+
+**`parse_args()`**
+
+* Input:
+    * `file1`: Path to the first CSV file.
+    * `file2`: Path to the second CSV file.
+    * `delimiter`: Delimiter used in the CSV files.
+    * `identifier`: Column(s) to order the results.
+    * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
+    * `columns`: Columns to exclude (space-separated indices).
+    * `output`: Output file name.
+* Output:
+    * `argparse.Namespace` object with the processed arguments.
+
+**`process_single_file()`**
+
+* Input:
+    * `csv_handler`: `CSVHandler` object.
+    * `data_comparator`: `DataComparator` object.
+    * `arguments`: `argparse.Namespace` object with the processed arguments.
+    * `base_path`: Path to the base directory.
+* Output:
+    None.
+
+**`process_two_files()`**
+
+* Input:
+    * `csv_handler`: `CSVHandler` object.
+    * `data_comparator`: `DataComparator` object.
+    * `arguments`: `argparse.Namespace` object with the processed arguments.
+    * `base_path`: Path to the base directory.
+* Output:
+    None.
+
+**`read_csv()`**
+
+* Input:
+    * `csv_handler`: `CSVHandler` object.
+    * `path`: Path to the CSV file.
+    * `delimiter`: Delimiter used in the CSV file.
+    * `columns`: Columns to exclude (space-separated indices).
+* Output:
+    `DataFrame` with the data from the CSV file.
+
+**`compare_dt()`**
+
+* Input:
+    * `df1`: `DataFrame` with the data from the first CSV file.
+    * `df2`: `DataFrame` with the data from the second CSV file.
+    * `identifier`: Column(s) to order the results.
+    * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
+* Output:
+    `DataFrame` with the differences between the two DataFrames.
+
+**`find_differences()`**
+
+* Input:
+    * `df`: `DataFrame` with the differences between the two DataFrames.
+    * `identifier`: Column(s) to order the results.
+* Output:
+    `DataFrame` with detailed differences between the two DataFrames
+
+
 ## Conclusion
 
 The Python code provided is a comprehensive tool for comparing CSV files and identifying differences between them. It allows for flexible comparison options, handles missing values, and provides detailed information about the differences.
@@ -191,6 +192,63 @@ El código funciona de la siguiente manera:
 1. Se leen los datos de los dos archivos CSV.
 2. Se comparan los datos de los dos archivos CSV.
 3. Se encuentran las diferencias entre los dos archivos CSV.
+
+## Ejemplos de uso
+
+### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
+* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
+
+Examples:
+```bash
+# Comparar valores en la columna ID
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
+```
+
+```bash
+# Mostrar registros que solo están en el archivo izquierdo
+python3 main.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_option left_only
+```
+
+```bash
+# Mostrar registros que solo están en el archivo derecho
+`python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
+```
+
+```bash
+# Mostrar registros que están en ambos archivos
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
+```
+
+```bash
+# Excluir columnas 0, 3 y 4 al realizar la comparación
+python3 main.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+```
+
+### Para encontrar duplicados en un archivo usa el siguiente comando:
+* `python3 main.py <file1> <file2> <delimiter>`
+
+Examples:
+```bash
+# Encontrar duplicados en el archivo
+python3 main.py file1.csv '|'
+```
+
+## Argumentos de entrada
+
+El código requiere los siguientes argumentos de entrada para funcionar correctamente:
+
+* `file1`: Ruta al primer archivo CSV a comparar
+* `delimiter`: Character delimitador utilizado en los archivos CSV
+
+## Argumentos opcionales
+
+El código también admite los siguientes argumentos opcionales para una mayor personalización:
+
+* `--file2`: Ruta al segundo archivo CSV a comparar
+* `--identifier`: Columna(s) para ordenar los resultados de la comparación
+* `--merge_option`: Opción de comparación (left_only, right_only, both, o default)
+* `--columns`: Lista separada por espacios de índices de columnas para excluir de la comparación
+* `--output`: Nombre del archivo de salida para almacenar los resultados de la comparación
 
 ## Funciones
 
@@ -267,63 +325,6 @@ La entrada y salida de cada función se describe a continuación:
     * `identifier`: Columna(s) para ordenar los resultados.
 * Salida:
     `DataFrame` con las diferencias detalladas entre los dos DataFrames.
-
-## Ejemplos de uso
-
-### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
-* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
-
-Examples:
-```bash
-# Comparar valores en la columna ID
-python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default
-```
-
-```bash
-# Mostrar registros que solo están en el archivo izquierdo
-python3 main.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_option left_only
-```
-
-```bash
-# Mostrar registros que solo están en el archivo derecho
-`python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
-```
-
-```bash
-# Mostrar registros que están en ambos archivos
-python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option both
-```
-
-```bash
-# Excluir columnas 0, 3 y 4 al realizar la comparación
-python3 main.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
-```
-
-### Para encontrar duplicados en un archivo usa el siguiente comando:
-* `python3 main.py <file1> <file2> <delimiter>`
-
-Examples:
-```bash
-# Encontrar duplicados en el archivo
-python3 main.py file1.csv '|'
-```
-
-## Argumentos de entrada
-
-El código requiere los siguientes argumentos de entrada para funcionar correctamente:
-
-* `file1`: Ruta al primer archivo CSV a comparar
-* `delimiter`: Character delimitador utilizado en los archivos CSV
-
-## Argumentos opcionales
-
-El código también admite los siguientes argumentos opcionales para una mayor personalización:
-
-* `--file2`: Ruta al segundo archivo CSV a comparar
-* `--identifier`: Columna(s) para ordenar los resultados de la comparación
-* `--merge_option`: Opción de comparación (left_only, right_only, both, o default)
-* `--columns`: Lista separada por espacios de índices de columnas para excluir de la comparación
-* `--output`: Nombre del archivo de salida para almacenar los resultados de la comparación
 
 ## Conclusión
 
