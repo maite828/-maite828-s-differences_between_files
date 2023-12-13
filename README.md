@@ -52,7 +52,7 @@ python3 main.py file1.csv '|'
 ```bash
 # This method converts a string of column indexes into a list of integers to pass into a slice object
 # that will allow us to choose a range of duplicate columns that we want to see.
-python3 main.py file1.csv '|' "3-4"
+python3 main.py file1.csv '|' --cols_index "3-6"
 ```
 
 ## Description
