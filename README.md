@@ -228,7 +228,7 @@ python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option
 
 ```bash
 # Excluir columnas 0, 3 y 4 al realizar la comparación
-python3 main.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --cols_index "0 3 4"
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --cols_index "0 3 4"
 ```
 
 ### Para encontrar duplicados en un archivo usa el siguiente comando:
@@ -242,7 +242,7 @@ python3 main.py file1.csv '|'
 ```bash
 # Este método convierte una cadena de índices de columnas en una lista de números enteros para pasar a un objeto de segmento
 # que nos permitirá elegir un rango de columnas duplicadas que queremos ver.
-python3 main.py file1.csv '|' "3-4"
+python3 main.py file1.csv '|' --cols_index "3-4"
 ```
 
 ## Argumentos de entrada
