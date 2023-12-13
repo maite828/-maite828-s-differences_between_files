@@ -9,11 +9,12 @@ The code works as follows:
 1. The data from the two CSV files is read.
 2. The data from the two CSV files is compared.
 3. The differences between the two CSV files are found.
+4. Find duplicate records in a file.
 
 ## Usage examples
 
 ### To compare two CSV files, you can use the following commands:
-* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
+* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--cols_index <excluded_columns>] [--output <output_file>]`
 
 Examples:
 ```bash
@@ -192,6 +193,7 @@ El código funciona de la siguiente manera:
 1. Se leen los datos de los dos archivos CSV.
 2. Se comparan los datos de los dos archivos CSV.
 3. Se encuentran las diferencias entre los dos archivos CSV.
+4. Busca registros duplicados en un archivo.
 
 ## Ejemplos de uso
 
@@ -211,7 +213,7 @@ python3 main.py file1.csv --file2  file2.csv '|' --identifier 'ID' --merge_optio
 
 ```bash
 # Mostrar registros que solo están en el archivo derecho
-`python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option right_only
 ```
 
 ```bash
