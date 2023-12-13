@@ -38,7 +38,7 @@ python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option
 
 ```bash
 # Exclude columns 0, 3, and 4 when performing the comparison
-python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --cols "0 3 4"
 ```
 
 ### Find duplicates in the file
@@ -61,7 +61,7 @@ The `reporting_compare.py` script takes the following command line arguments:
 * `delimiter`: The delimiter used to separate the columns in the CSV files.
 * `--identifier`: The name of the column to use to identify duplicate records.
 * `--merge_option`: The option to use when merging records with duplicate identifiers.
-* `--columns`: A comma-separated list of columns to exclude from the comparison.
+* `--cols`: A comma-separated list of columns to exclude from the comparison.
 
 ## Merge options
 
@@ -86,7 +86,7 @@ The code also supports the following optional arguments for greater customizatio
 * `--file2`: **Path to the second CSV file to compare**
 * `--identifier`: **Column(s) to use to sort the results of the comparison**
 * `--merge_option`: **Comparison option (left_only, right_only, both, or default)**
-* `--columns`: **List of column indices separated by spaces to exclude from the comparison**
+* `--cols_index`: **List of column indices separated by spaces to exclude from the comparison**
 * `--output`: **Name of the output file to store the results of the comparison**
 
 ## Functions
@@ -112,7 +112,7 @@ The input and output of each function is described below:
     * `delimiter`: Delimiter used in the CSV files.
     * `identifier`: Column(s) to order the results.
     * `merge_option`: Comparison option: `left_only`, `right_only`, `both`, or `default`.
-    * `columns`: Columns to exclude (space-separated indices).
+    * `cols_index`: Columns to exclude (space-separated indices).
     * `output`: Output file name.
 * Output:
     * `argparse.Namespace` object with the processed arguments.
@@ -143,7 +143,7 @@ The input and output of each function is described below:
     * `csv_handler`: `CSVHandler` object.
     * `path`: Path to the CSV file.
     * `delimiter`: Delimiter used in the CSV file.
-    * `columns`: Columns to exclude (space-separated indices).
+    * `cols`: Columns to exclude (space-separated indices).
 * Output:
     `DataFrame` with the data from the CSV file.
 
@@ -196,7 +196,7 @@ El código funciona de la siguiente manera:
 ## Ejemplos de uso
 
 ### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
-* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--columns <excluded_columns>] [--output <output_file>]`
+* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--cols_index <excluded_columns>] [--output <output_file>]`
 
 Examples:
 ```bash
@@ -221,7 +221,7 @@ python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option
 
 ```bash
 # Excluir columnas 0, 3 y 4 al realizar la comparación
-python3 main.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --columns "0 3 4"
+python3 main.py file1.csv f--file2 file2.csv '|' --identifier 'ID' --merge_option default --cols_index "0 3 4"
 ```
 
 ### Para encontrar duplicados en un archivo usa el siguiente comando:
@@ -247,7 +247,7 @@ El código también admite los siguientes argumentos opcionales para una mayor p
 * `--file2`: Ruta al segundo archivo CSV a comparar
 * `--identifier`: Columna(s) para ordenar los resultados de la comparación
 * `--merge_option`: Opción de comparación (left_only, right_only, both, o default)
-* `--columns`: Lista separada por espacios de índices de columnas para excluir de la comparación
+* `--cols_index`: Lista separada por espacios de índices de columnas para excluir de la comparación
 * `--output`: Nombre del archivo de salida para almacenar los resultados de la comparación
 
 ## Funciones
@@ -273,7 +273,7 @@ La entrada y salida de cada función se describe a continuación:
     * `delimiter`: Delimitador utilizado en los archivos CSV.
     * `identifier`: Columna(s) para ordenar los resultados.
     * `merge_option`: Opción de comparación: `left_only`, `right_only`, `both`, o `default`.
-    * `columns`: Columnas para excluir (índices separados por espacios).
+    * `cols`: Columnas para excluir (índices separados por espacios).
     * `output`: Nombre del archivo de salida.
 * Salida:
     * Objeto `argparse.Namespace` con los argumentos procesados.
@@ -304,7 +304,7 @@ La entrada y salida de cada función se describe a continuación:
     * `csv_handler`: Objeto `CSVHandler`.
     * `path`: Ruta al archivo CSV.
     * `delimiter`: Delimitador utilizado en el archivo CSV.
-    * `columns`: Columnas para excluir (índices separados por espacios).
+    * `cols`: Columnas para excluir (índices separados por espacios).
 * Salida:
     `DataFrame` con los datos del archivo CSV.
 
