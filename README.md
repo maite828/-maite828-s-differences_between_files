@@ -50,8 +50,7 @@ Examples:
 python3 main.py file1.csv '|'
 ```
 ```bash
-# This method converts a string of column indexes into a list of integers to pass into a slice object
-# that will allow us to choose a range of duplicate columns that we want to see.
+# Finding duplicates in the file, 'cols_index' will allow us to choose the range of columns to display.
 python3 main.py file1.csv '|' --cols_index "3-6"
 ```
 
@@ -240,8 +239,7 @@ Examples:
 python3 main.py file1.csv '|'
 ```
 ```bash
-# Este método convierte una cadena de índices de columnas en una lista de números enteros para pasar a un objeto de segmento
-# que nos permitirá elegir un rango de columnas duplicadas que queremos ver.
+# Encontrar duplicados en el archivo, 'cols_index' nos permitirá elegir el rango de columnas a visualizar.
 python3 main.py file1.csv '|' --cols_index "3-4"
 ```
 
