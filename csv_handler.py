@@ -78,4 +78,6 @@ class CSVHandler:
                     cols_index_list.extend(cols_indices)
                 else:
                     cols_index_list.append(int(part))
-        return cols_index_list
+            cols_index = cols_index_list
+
+        return cols_index

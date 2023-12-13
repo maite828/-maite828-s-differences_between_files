@@ -49,6 +49,11 @@ Examples:
 ```bash
 python3 main.py file1.csv '|'
 ```
+```bash
+# This method converts a string of column indexes into a list of integers to pass into a slice object
+# that will allow us to choose a range of duplicate columns that we want to see.
+python3 main.py file1.csv '|' "3-4"
+```
 
 ## Description
 
@@ -233,6 +238,11 @@ Examples:
 ```bash
 # Encontrar duplicados en el archivo
 python3 main.py file1.csv '|'
+```
+```bash
+# Este método convierte una cadena de índices de columnas en una lista de números enteros para pasar a un objeto de segmento
+# que nos permitirá elegir un rango de columnas duplicadas que queremos ver.
+python3 main.py file1.csv '|' "3-4"
 ```
 
 ## Argumentos de entrada

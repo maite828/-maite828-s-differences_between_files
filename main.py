@@ -70,9 +70,12 @@ def process_single_file(csv_handler, data_comparator, base_path, file_name, deli
     csv_handler.write_csv(data_comparator.duplicates_dt(df, file_name), base_path, duplicates_file, delimiter)
 
     # Print details of the duplicates
-    valid_range = CSVHandler.convert_cols_index_list(cols)
     duplicates = csv_handler.read_csv(base_path, duplicates_file, delimiter, directory="output_files")
-    print_table(duplicates, columns=slice(valid_range[0], valid_range[1]))
+    if cols:
+        valid_range = CSVHandler.convert_cols_index_list(cols)
+        print_table(duplicates, columns=slice(valid_range[0], valid_range[1]))
+    else:
+        print_table(duplicates)
 
 
 def process_two_files(csv_handler, data_comparator, base_path, file1_name, file2_name, delimiter, identifier,
