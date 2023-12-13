@@ -38,7 +38,7 @@ python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option
 
 ```bash
 # Exclude columns 0, 3, and 4 when performing the comparison
-python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --cols "0 3 4"
+python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option default --cols_index "0 3 4"
 ```
 
 ### Find duplicates in the file
@@ -61,7 +61,7 @@ The `reporting_compare.py` script takes the following command line arguments:
 * `delimiter`: The delimiter used to separate the columns in the CSV files.
 * `--identifier`: The name of the column to use to identify duplicate records.
 * `--merge_option`: The option to use when merging records with duplicate identifiers.
-* `--cols`: A comma-separated list of columns to exclude from the comparison.
+* `--cols_index`: A comma-separated list of columns to exclude from the comparison.
 
 ## Merge options
 
