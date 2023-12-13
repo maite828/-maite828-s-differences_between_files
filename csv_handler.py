@@ -24,14 +24,12 @@ class CSVHandler:
         df = pd.read_csv(os.path.join(full_path, file_name), sep=delimiter, engine='python')
 
         if cols_index:
-            indices_to_exclude = [int(index) for index in cols_index.split()]
-            valid_indices = [index for index in indices_to_exclude if 0 <= index < len(df.columns)]
-            df.drop(columns=df.columns[valid_indices], inplace=True)
+            df.drop(columns=df.columns[CSVHandler.convert_cols_index_list(cols_index)], inplace=True)
 
         return df
 
     @staticmethod
-    def write_csv(df, base_path, file_name, directory="output_files"):
+    def write_csv(df, base_path, file_name, delimiter, directory="output_files"):
         """
         Write a DataFrame to a CSV file.
 
@@ -39,6 +37,7 @@ class CSVHandler:
             df (pd.DataFrame): DataFrame to be written.
             base_path (str): Base path for file operations.
             file_name (str): Name of the CSV file.
+            delimiter (str): Delimiter used in the CSV file.
             directory (str): Directory to write the CSV file to.
 
         Returns:
@@ -46,7 +45,7 @@ class CSVHandler:
         """
         full_path = DirectoryManager.create_directory(base_path, directory)
         file_path = os.path.join(full_path, file_name)
-        df.to_csv(file_path, index=False)
+        df.to_csv(file_path, sep=delimiter, index=False)
 
     @staticmethod
     def handle_type(value):
@@ -60,3 +59,23 @@ class CSVHandler:
             str or value: Handled value, converted to a string if applicable.
         """
         return str(value) if pd.notna(value) and not isinstance(value, list) else value
+
+    @staticmethod
+    def convert_cols_index_list(cols_index):
+        """
+        This method converts a string of columns indices to a list of integers.
+        Args:
+            cols_index (str): A string of columns indices.
+        Returns:
+            list: A list of integers.
+        """
+        # Convert cols_index to a list of integers
+        if cols_index:
+            cols_index_list = []
+            for part in cols_index.split():
+                if '-' in part:
+                    cols_indices = [int(index) for index in part.split("-")]
+                    cols_index_list.extend(cols_indices)
+                else:
+                    cols_index_list.append(int(part))
+        return cols_index_list

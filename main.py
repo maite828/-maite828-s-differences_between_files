@@ -38,18 +38,18 @@ def parse_args():
         argparse.Namespace: Parsed arguments.
     """
     parser = argparse.ArgumentParser(description="Compare two CSV files and find differences.")
-    parser.add_argument("file1", help="Path to the first CSV file")
-    parser.add_argument("--file2", help="Path to the second CSV file")
-    parser.add_argument("delimiter", help="Delimiter used in CSV files")
-    parser.add_argument("--identifier", help="Column(s) to order the results by")
-    parser.add_argument("--merge_option", help="Comparison merge_option: left_only, right_only, both, default")
-    parser.add_argument("--cols_index", help="Columns to exclude (space-separated indices)")
-    parser.add_argument("--output", help="Output file name")
+    parser.add_argument('file1', help="Path to the first CSV file")
+    parser.add_argument('--file2', help="Path to the second CSV file")
+    parser.add_argument('delimiter', help="Delimiter used in CSV files")
+    parser.add_argument('--identifier', help="Column(s) to order the results by")
+    parser.add_argument('--merge_option', help="Comparison merge_option: left_only, right_only, both, default")
+    parser.add_argument('--cols_index', help="Columns to exclude (space-separated indices)")
+    parser.add_argument('--output', help="Output file name")
 
     return parser.parse_args()
 
 
-def process_single_file(csv_handler, data_comparator, base_path, file_name, delimiter):
+def process_single_file(csv_handler, data_comparator, base_path, file_name, delimiter, cols):
     """
     Process a single CSV file: find duplicates and print details.
 
@@ -59,6 +59,7 @@ def process_single_file(csv_handler, data_comparator, base_path, file_name, deli
         base_path (str): Base path of the script.
         file_name (str): Name of the CSV file.
         delimiter (str): Delimiter used in the CSV file.
+        cols (str): Columns I want to show when reading the final file of duplicates.
 
     Returns:
         None
@@ -66,12 +67,12 @@ def process_single_file(csv_handler, data_comparator, base_path, file_name, deli
     df = csv_handler.read_csv(base_path, file_name, delimiter)
 
     duplicates_file = f"duplicates_{file_name}"
-    csv_handler.write_csv(data_comparator.duplicates_dt(df, file_name), base_path, duplicates_file)
+    csv_handler.write_csv(data_comparator.duplicates_dt(df, file_name), base_path, duplicates_file, delimiter)
 
     # Print details of the duplicates
+    valid_range = CSVHandler.convert_cols_index_list(cols)
     duplicates = csv_handler.read_csv(base_path, duplicates_file, delimiter, directory="output_files")
-    print_table(duplicates,  columns=slice(0, 5))
-    print_table(duplicates,  duplicates.columns[:5].tolist())
+    print_table(duplicates, columns=slice(valid_range[0], valid_range[1]))
 
 
 def process_two_files(csv_handler, data_comparator, base_path, file1_name, file2_name, delimiter, identifier,
@@ -99,13 +100,13 @@ def process_two_files(csv_handler, data_comparator, base_path, file1_name, file2
     df2 = csv_handler.read_csv(base_path, file2_name, delimiter, cols)
 
     print("Duplicates:")
-    csv_handler.write_csv(data_comparator.duplicates_dt(df1, file1_name), base_path, f"duplicates_{file1_name}")
-    csv_handler.write_csv(data_comparator.duplicates_dt(df2, file2_name), base_path, f"duplicates_{file2_name}")
+    csv_handler.write_csv(data_comparator.duplicates_dt(df1, file1_name), base_path, f"duplicates_{file1_name}", delimiter)
+    csv_handler.write_csv(data_comparator.duplicates_dt(df2, file2_name), base_path, f"duplicates_{file2_name}", delimiter)
 
     output_file = output_file or f'output_file_{merge_option}.csv'
     result = data_comparator.compare_dt(df1.drop_duplicates(), df2.drop_duplicates(), identifier, merge_option)
 
-    csv_handler.write_csv(result, base_path, output_file)
+    csv_handler.write_csv(result, base_path, output_file, delimiter)
 
     print("\nSchemas:\n File1: {file1} {shape1} \n File2: {file2} {shape2} \n".format(
         file1=file1_name, shape1=df1.shape, file2=file2_name, shape2=df2.shape))
@@ -139,7 +140,8 @@ def main(arguments, base_path):
     data_comparator = DataComparator()
 
     if not arguments.file2:
-        process_single_file(csv_handler, data_comparator, base_path, arguments.file1, arguments.delimiter)
+        process_single_file(csv_handler, data_comparator, base_path, arguments.file1, arguments.delimiter,
+                            arguments.cols_index)
     else:
         process_two_files(csv_handler, data_comparator, base_path, arguments.file1, arguments.file2, arguments.delimiter,
                           arguments.identifier, arguments.cols_index, arguments.output, arguments.merge_option)
