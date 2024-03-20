@@ -62,7 +62,7 @@ This document provides examples of how to use the `main.py` script to compare tw
 
 The `reporting_compare.py` script takes the following command line arguments:
 
-* `file1` and `file2`: The names of the two CSV files to be compared or the name of the file to be searched for duplicates.
+* `file1` and `--file2`: The names of the two CSV files to be compared or the name of the file to be searched for duplicates.
 * `delimiter`: The delimiter used to separate the columns in the CSV files.
 * `--identifier`: The name of the column to use to identify duplicate records.
 * `--merge_option`: The option to use when merging records with duplicate identifiers.
