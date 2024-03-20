@@ -14,7 +14,7 @@ The code works as follows:
 ## Usage examples
 
 ### To compare two CSV files, you can use the following commands:
-* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--cols_index <excluded_columns>] [--output <output_file>]`
+* `python3 main.py <file1> [--file2 <file2>] <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--cols_index <excluded_columns>] [--output <output_file>]`
 
 Examples:
 ```bash
@@ -202,7 +202,7 @@ El código funciona de la siguiente manera:
 ## Ejemplos de uso
 
 ### Para comparar dos archivos CSV, puedes utilizar los siguientes comandos:
-* `python3 main.py <file1> <file2> <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--cols_index <excluded_columns>] [--output <output_file>]`
+* `python3 main.py <file1> [--file2 <file2>] <delimiter> [--identifier <id_column>] [--merge_option <merge_column>] [--cols_index <excluded_columns>] [--output <output_file>]`
 
 Examples:
 ```bash
@@ -231,7 +231,7 @@ python3 main.py file1.csv --file2 file2.csv '|' --identifier 'ID' --merge_option
 ```
 
 ### Para encontrar duplicados en un archivo usa el siguiente comando:
-* `python3 main.py <file1> <file2> <delimiter>`
+* `python3 main.py <file1> <delimiter>`
 
 Examples:
 ```bash
